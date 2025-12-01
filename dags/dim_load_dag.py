@@ -4,7 +4,6 @@ from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 #from airflow.providers.postgres.operators.postgres import PostgresOperator
 #from airflow.utils.dates import days_ago
 from datetime import datetime, timedelta
-from datetime import timedelta
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 
 #from airflow.operators.dagrun_operator import TriggerDagRunOperator
@@ -19,13 +18,14 @@ default_args = {
 }
 
 with DAG(
-    'create_and_load_dim',
+    dag_id='create_and_load_dim',
     default_args=default_args,
     description='ETL for food delivery data into Redshift',
-    schedule_interval=None,
-    start_date=datetime(2025, 11, 30),  # or whatever you want
-    catchup=False
+    schedule=None,                      # <-- use `schedule`, not `schedule_interval`
+    start_date=datetime(2025, 11, 30),
+    catchup=False,
 ) as dag:
+
 
 
     # Create schema if it doesn't exist
