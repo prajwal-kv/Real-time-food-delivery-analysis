@@ -1,9 +1,12 @@
 from airflow import DAG
 from airflow.providers.amazon.aws.transfers.s3_to_redshift import S3ToRedshiftOperator
-from airflow.providers.postgres.operators.postgres import PostgresOperator
+from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
+#from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.utils.dates import days_ago
 from datetime import timedelta
-from airflow.operators.dagrun_operator import TriggerDagRunOperator
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
+
+#from airflow.operators.dagrun_operator import TriggerDagRunOperator
 
 default_args = {
     'owner': 'airflow',
@@ -24,39 +27,39 @@ with DAG(
 ) as dag:
 
     # Create schema if it doesn't exist
-    create_schema = PostgresOperator(
+    create_schema = SQLExecuteQueryOperator(
         task_id='create_schema',
         postgres_conn_id='redshift_connection_id',
         sql="CREATE SCHEMA IF NOT EXISTS food_delivery_datamart;",
     )
 
     # Drop tables if they exist
-    drop_dimCustomers = PostgresOperator(
+    drop_dimCustomers = SQLExecuteQueryOperator(
         task_id='drop_dimCustomers',
         postgres_conn_id='redshift_connection_id',
         sql="DROP TABLE IF EXISTS food_delivery_datamart.dimCustomers;",
     )
 
-    drop_dimRestaurants = PostgresOperator(
+    drop_dimRestaurants = SQLExecuteQueryOperator(
         task_id='drop_dimRestaurants',
         postgres_conn_id='redshift_connection_id',
         sql="DROP TABLE IF EXISTS food_delivery_datamart.dimRestaurants;",
     )
 
-    drop_dimDeliveryRiders = PostgresOperator(
+    drop_dimDeliveryRiders = SQLExecuteQueryOperator(
         task_id='drop_dimDeliveryRiders',
         postgres_conn_id='redshift_connection_id',
         sql="DROP TABLE IF EXISTS food_delivery_datamart.dimDeliveryRiders;",
     )
 
-    drop_factOrders = PostgresOperator(
+    drop_factOrders = SQLExecuteQueryOperator(
         task_id='drop_factOrders',
         postgres_conn_id='redshift_connection_id',
         sql="DROP TABLE IF EXISTS food_delivery_datamart.factOrders;",
     )
 
     # Create dimension and fact tables
-    create_dimCustomers = PostgresOperator(
+    create_dimCustomers = SQLExecuteQueryOperator(
         task_id='create_dimCustomers',
         postgres_conn_id='redshift_connection_id',
         sql="""
@@ -71,7 +74,7 @@ with DAG(
         """,
     )
 
-    create_dimRestaurants = PostgresOperator(
+    create_dimRestaurants = SQLExecuteQueryOperator(
         task_id='create_dimRestaurants',
         postgres_conn_id='redshift_connection_id',
         sql="""
@@ -85,7 +88,7 @@ with DAG(
         """,
     )
 
-    create_dimDeliveryRiders = PostgresOperator(
+    create_dimDeliveryRiders = SQLExecuteQueryOperator(
         task_id='create_dimDeliveryRiders',
         postgres_conn_id='redshift_connection_id',
         sql="""
@@ -100,7 +103,7 @@ with DAG(
         """,
     )
 
-    create_factOrders = PostgresOperator(
+    create_factOrders = SQLExecuteQueryOperator(
         task_id='create_factOrders',
         postgres_conn_id='redshift_connection_id',
         sql="""
