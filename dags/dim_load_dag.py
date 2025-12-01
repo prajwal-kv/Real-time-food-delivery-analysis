@@ -2,7 +2,8 @@ from airflow import DAG
 from airflow.providers.amazon.aws.transfers.s3_to_redshift import S3ToRedshiftOperator
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 #from airflow.providers.postgres.operators.postgres import PostgresOperator
-from airflow.utils.dates import days_ago
+#from airflow.utils.dates import days_ago
+from datetime import datetime, timedelta
 from datetime import timedelta
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 
@@ -22,9 +23,10 @@ with DAG(
     default_args=default_args,
     description='ETL for food delivery data into Redshift',
     schedule_interval=None,
-    start_date=days_ago(1),
+    start_date=datetime(2025, 11, 30),  # or whatever you want
     catchup=False
 ) as dag:
+
 
     # Create schema if it doesn't exist
     create_schema = SQLExecuteQueryOperator(
