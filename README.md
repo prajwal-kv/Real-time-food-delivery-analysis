@@ -112,32 +112,20 @@ Required AWS Permissions
 
 food-data-pipeline/
 ├── dags/
-
 │   ├── food_data_pipeline_dag.py
-
 │   └── config/
-
 │       └── redshift_config.py
-
 ├── scripts/
-
 │   ├── data_generator/
-
 │   │   └── mock_food_data_generator.py
-
 │   ├── spark_jobs/
-
 │   │   └── food_data_processor.py
-
 │   └── redshift/
-
 │       ├── create_dim_tables.sql
 │       └── create_fact_tables.sql
 ├── config/
-
 │   ├── emr_config.json
 │   └── kinesis_config.json
-
 ├── buildspec.yml
 ├── requirements.txt
 └── README.md
