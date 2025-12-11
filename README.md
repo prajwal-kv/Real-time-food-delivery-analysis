@@ -196,34 +196,47 @@ aws codebuild create-project \
 End-to-End Data Flow
 
 1.	Data Generation
-o	Python mock generator creates realistic food industry data
-o	Data includes orders, inventory, sales, and customer information
-2.	Data Ingestion
-o	Generator pushes data to Kinesis Data Stream
-o	Stream buffers data for real-time processing
+   
+	Python mock generator creates realistic food industry data
+	Data includes orders, inventory, sales, and customer information
+
+3.	Data Ingestion
+   
+	Generator pushes data to Kinesis Data Stream
+	Stream buffers data for real-time processing
+
 3.	Orchestration
-o	Airflow DAG triggers based on schedule or event
-o	Airflow submits EMR step for Spark job execution
+   
+	Airflow DAG triggers based on schedule or event
+	Airflow submits EMR step for Spark job execution
+
 4.	Data Processing
-o	EMR reads data from Kinesis stream
-o	PySpark performs: 
-	Data deduplication
-	Schema validation
-	Data transformation
-	Aggregations
-5.	Data Loading
-o	Dimension tables loaded from S3 (via CI/CD)
-o	Fact tables loaded from EMR processing results
-o	Data inserted into Redshift tables
-6.	Visualization
-o	QuickSight connects to Redshift
-o	Dashboards display real-time analytics
-o	Automated report generation
+   
+	EMR reads data from Kinesis stream
+	PySpark performs: 
+	Data deduplication
+	Schema validation
+	Data transformation
+	Aggregations
+
+6.	Data Loading
+   
+	Dimension tables loaded from S3 (via CI/CD)
+	Fact tables loaded from EMR processing results
+	Data inserted into Redshift tables
+
+7.	Visualization
+   
+	QuickSight connects to Redshift
+	Dashboards display real-time analytics
+	Automated report generation
 
 ⚙️ Configuration
 
 Airflow DAG Configuration
+
 default_args = {
+
     'owner': 'data-team',
     'depends_on_past': False,
     'start_date': datetime(2024, 1, 1),
@@ -233,20 +246,26 @@ default_args = {
     'retry_delay': timedelta(minutes=5),
 }
 
+
 dag = DAG(
+
     'food_data_pipeline',
     default_args=default_args,
     description='Real-time food data processing pipeline',
     schedule_interval='@hourly',
     catchup=False
 )
+
 EMR Spark Job Configuration
+
 spark_config = {
+
     'spark.streaming.stopGracefullyOnShutdown': 'true',
     'spark.streaming.backpressure.enabled': 'true',
     'spark.sql.adaptive.enabled': 'true',
     'spark.dynamicAllocation.enabled': 'true'
 }
+
 
 📊 Usage
 Start Data Generation
