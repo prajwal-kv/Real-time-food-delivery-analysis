@@ -171,14 +171,23 @@ airflow users create \
 5. Configure Environment Variables
 
 Create a .env file:
+
 AWS_REGION=us-east-1
+
 KINESIS_STREAM_NAME=food-data-stream
+
 EMR_CLUSTER_ID=j-XXXXXXXXXXXXX
+
 REDSHIFT_HOST=your-cluster.region.redshift.amazonaws.com
+
 REDSHIFT_DATABASE=fooddata
+
 REDSHIFT_USER=admin
+
 REDSHIFT_PASSWORD=YourPassword123
+
 S3_SCRIPTS_BUCKET=food-pipeline-scripts
+
 S3_DATA_BUCKET=food-pipeline-data
 
 6. Deploy with CodeBuild
